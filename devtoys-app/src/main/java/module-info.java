@@ -1,4 +1,4 @@
-module devtoys.app {
+module io.devtoys.app {
     requires devtoys.api;
     requires devtoys.core;
     requires javafx.controls;

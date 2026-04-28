@@ -1,9 +1,9 @@
-module devtoys.core {
+module io.devtoys.core {
+    requires java.logging;
     requires transitive io.devtoys.api;
-//    requires java.logging;
 
-//    uses io.devtoys.api.IGuiTool;
+    uses io.devtoys.api.IGuiTool;
 
-//    exports io.devtoys.core;
-//    exports io.devtoys.core.services;
+    exports io.devtoys.core;
+    exports io.devtoys.core.services;
 }

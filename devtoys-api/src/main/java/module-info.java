@@ -5,7 +5,7 @@
  * framework beyond the JavaFX {@link javafx.scene.Node} type required as the
  * return type of {@link io.devtoys.api.IGuiTool#getView()}.
  */
-module devtoys.api {
+module io.devtoys.api {
     requires transitive javafx.graphics;
     requires transitive javafx.controls;
 
