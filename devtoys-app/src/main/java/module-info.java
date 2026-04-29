@@ -1,9 +1,12 @@
 module io.devtoys.app {
-    requires devtoys.api;
-    requires devtoys.core;
+    requires io.devtoys.api;
+    requires io.devtoys.core;
+    requires io.devtoys.tools;
     requires javafx.controls;
     requires javafx.graphics;
     requires java.logging;
+    requires java.compiler;
+    requires atlantafx.base;
 
     uses io.devtoys.api.IGuiTool;
 

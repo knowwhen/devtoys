@@ -15,9 +15,9 @@ import javafx.stage.Stage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DevToys extends Application {
+public class DevToysApp extends Application {
 
-    private static final Logger LOG = Logger.getLogger(DevToys.class.getName());
+    private static final Logger LOG = Logger.getLogger(DevToysApp.class.getName());
 
     private static final String SETTING_DARK_MODE = "app.darkMode";
 
@@ -58,5 +58,9 @@ public class DevToys extends Application {
         boolean nowDark = !settings.getBoolean(SETTING_DARK_MODE, true);
         settings.setBoolean(SETTING_DARK_MODE, nowDark);
         applyTheme(nowDark);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

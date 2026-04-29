@@ -19,6 +19,16 @@
         </dependency>
 
         <dependency>
+            <groupId>io.devtoys</groupId>
+            <artifactId>devtoys-tools</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.devtoys</groupId>
+            <artifactId>devtoys-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
         </dependency>
@@ -26,6 +36,11 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>atlantafx-base</artifactId>
         </dependency>
     </dependencies>
 </project>

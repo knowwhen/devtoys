@@ -4,9 +4,7 @@ import io.devtoys.api.IGuiTool;
 import io.devtoys.api.ServiceContext;
 import io.devtoys.api.ToolMetadata;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +29,7 @@ public final class ToolRegistry {
     private final List<ToolDescriptor> tools;
 
     public ToolRegistry(List<ToolDescriptor> tools) {
-        this.tools = tools;
+        this.tools = List.copyOf(tools);
     }
 
     /**
@@ -48,7 +46,7 @@ public final class ToolRegistry {
 
         for (IGuiTool tool : ServiceLoader.load(IGuiTool.class)) {
             ToolMetadata meta = tool.getClass().getAnnotation(ToolMetadata.class);
-            if (meta != null) {
+            if (meta == null) {
                 LOG.log(Level.WARNING,
                         "Tool {0} is registered as a service but missing @ToolMetadata; skipping.",
                         tool.getClass().getName());
@@ -67,5 +65,28 @@ public final class ToolRegistry {
 
         LOG.log(Level.INFO, "Discovered {0} tool(s).", found.size());
         return new ToolRegistry(found);
+    }
+
+    public List<ToolDescriptor> all() {
+        return tools;
+    }
+
+    public Map<String, List<ToolDescriptor>> byGroup() {
+        Map<String, List<ToolDescriptor>> result = new LinkedHashMap<>();
+        for (ToolDescriptor tool : tools) {
+            result.computeIfAbsent(tool.group(), key -> new ArrayList<>())
+                    .add(tool);
+        }
+        result.replaceAll((group, tools) -> Collections.unmodifiableList(tools));
+        return Collections.unmodifiableMap(result);
+    }
+
+    public List<ToolDescriptor> search(String query) {
+        if (query == null || query.isBlank()) {
+            return tools;
+        }
+        return tools.stream()
+                .filter(tool -> tool.matches(query))
+                .toList();
     }
 }
