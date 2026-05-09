@@ -43,4 +43,22 @@
             <artifactId>atlantafx-base</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>devtoys</finalName>
+        <plugins>
+            <!--
+                Development: `mvn -pl devtoys-app javafx:run`
+                Launches the app using the module path built by the plugin.
+                The syntax moduleName/className is required because the project is modular.
+            -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>io.devtoys.app/io.devtoys.app.Launcher</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
