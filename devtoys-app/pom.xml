@@ -61,4 +61,90 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!--
+            Packaging profile: `mvn -pl devtoys-app -am -Ppackage package`
+            Produces:
+                target/app/              - a jlink runtime image with the app baked in
+                target/installer/        - platform-native installer via jpackage
+
+            jlink + jpackage are preferred over a shaded fat jar because:
+              * Smaller final size (jlink strips unused JDK modules)
+              * No reflection / module-path headaches at runtime
+              * Real native installers (.msi / .dmg / .deb) with no JRE on the user's machine
+        -->
+        <profile>
+            <id>package</id>
+            <build>
+                <plugins>
+                    <!-- Step 1: Let javafx-maven-plugin drive jlink for us -->
+                    <plugin>
+                        <groupId>org.openjfx</groupId>
+                        <artifactId>javafx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jlink-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jlink</goal>
+                                </goals>
+                                <configuration>
+                                    <mainClass>io.devtoys.app/io.devtoys.app.Launcher</mainClass>
+                                    <launcher>devtoys</launcher>
+                                    <jlinkImageName>app</jlinkImageName>
+                                    <jlinkZipName>app</jlinkZipName>
+                                    <noManPages>true</noManPages>
+                                    <noHeaderFiles>true</noHeaderFiles>
+                                    <stripDebug>true</stripDebug>
+                                    <compress>2</compress>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!--
+                        Step 2: Invoke jpackage on the jlink image from step 1.
+                        We drive it via exec-maven-plugin because the official jpackage
+                        Maven plugin is still incubating. This runs `$JAVA_HOME/bin/jpackage`.
+                    -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                            <execution>
+                                <id>jpackage</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${java.home}/bin/jpackage</executable>
+                                    <arguments>
+                                        <argument>--name</argument>
+                                        <argument>DevToys</argument>
+                                        <argument>--app-version</argument>
+                                        <argument>0.1.0</argument>
+                                        <argument>--vendor</argument>
+                                        <argument>DevToys Java</argument>
+                                        <argument>--runtime-image</argument>
+                                        <argument>${project.build.directory}/app</argument>
+                                        <argument>--module</argument>
+                                        <argument>io.devtoys.app/io.devtoys.app.Launcher</argument>
+                                        <argument>--dest</argument>
+                                        <argument>${project.build.directory}/installer</argument>
+                                        <!-- Platform-specific hints (jpackage ignores irrelevant ones) -->
+                                        <argument>--win-menu</argument>
+                                        <argument>--win-shortcut</argument>
+                                        <argument>--win-dir-chooser</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
