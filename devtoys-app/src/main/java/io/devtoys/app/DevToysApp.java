@@ -11,13 +11,12 @@ import io.devtoys.core.services.JavaFxClipboardService;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DevToysApp extends Application {
 
-    private static final Logger LOG = Logger.getLogger(DevToysApp.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DevToysApp.class.getName());
 
     private static final String SETTING_DARK_MODE = "app.darkMode";
 
@@ -32,7 +31,7 @@ public class DevToysApp extends Application {
 
         // Discover tools
         ToolRegistry registry = ToolRegistry.discover(context);
-        LOG.log(Level.INFO, "加载了 {0} 个工具", registry.all().size());
+        LOG.info("加载了 {} 个工具", registry.all().size());
 
         // Initial theme
         boolean dark = settings.getBoolean(SETTING_DARK_MODE, true);

@@ -45,11 +45,11 @@ public @interface ToolMetadata {
     String description() default "";
 
     /**
-     * Unicode glyph used as the tool's icon. Typically from a Fluent / Material
-     * icon font that the app loads. For the skeleton we use plain Unicode
-     * symbols; a later iteration can switch to Ikonli for real icon fonts.
+     * Ikonli icon code (pack is inferred from prefix). See class javadoc for
+     * available packs. Defaults to a generic gear so a tool without an icon
+     * still renders cleanly.
      */
-    String iconGlyph() default "\u2699"; // gear
+    String iconCode() default "mdal-code";
 
     /** Search keywords. Used by the global search feature. */
     String[] searchKeywords() default {};

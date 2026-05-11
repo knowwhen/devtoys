@@ -9,20 +9,43 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The primary application shell.
+ *
+ * <p>Layout, from top to bottom:
+ * <pre>
+ *   +-------------------------------------------------------+
+ *   |  [🔍 Search...]                             [🌓 theme] |  &lt;-- top bar
+ *   +-------------------------------------------------------+
+ *   |         |                                             |
+ *   |  Tools  |             Active tool view                |
+ *   | (tree)  |                                             |
+ *   |         |                                             |
+ *   +-------------------------------------------------------+
+ * </pre>
+ *
+ * <p>Icons use Ikonli's {@link FontIcon#setIconLiteral(String)}, which throws
+ * {@link IllegalArgumentException} for unknown codes. Every use here is wrapped
+ * in a try/catch that falls back to "no icon" rather than trying another code —
+ * so a bad icon code logs a warning but never crashes the app.
+ */
 public class MainView extends BorderPane {
-    private final ToolRegistry registry;
+
+    private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
+
     private final TreeView<Object> tree;
     private final StackPane content;
-    private final Label welcome;
 
     public MainView(ToolRegistry registry, Runnable onToggleTheme, boolean isDarkInitially) {
-        this.registry = registry;
 
         // 顶部
         TextField search = new TextField();
@@ -55,7 +78,7 @@ public class MainView extends BorderPane {
         left.setMinWidth(180);
 
         // 内容
-        welcome = new Label("请选择一个工具");
+        Label welcome = new Label("请选择一个工具");
         welcome.getStyleClass().add("text-muted");
         content = new StackPane();
         content.setPadding(new Insets(0));
@@ -90,6 +113,24 @@ public class MainView extends BorderPane {
                 selectFirstTool();
             }
         });
+    }
+
+    /**
+     * Create a FontIcon for the given literal. Returns {@code null} (no icon)
+     * if the code doesn't resolve, instead of throwing. Callers decide whether
+     * to substitute text or just render nothing.
+     */
+    private static FontIcon safeIcon(String literal, int size) {
+        if (literal == null || literal.isBlank()) return null;
+        try {
+            FontIcon ic = new FontIcon();
+            ic.setIconLiteral(literal);
+            ic.setIconSize(size);
+            return ic;
+        } catch (Exception e) {
+            LOG.warn("Unknown icon code '{}'; rendering without icon.", literal);
+            return null;
+        }
     }
 
     private Map<String, List<ToolDescriptor>> groupOf(List<ToolDescriptor> descriptors) {
@@ -159,8 +200,10 @@ public class MainView extends BorderPane {
                 setStyle("-fx-font-weight: bold;");
             }
             if(item instanceof ToolDescriptor tool) {
-                setText(tool.metadata().iconGlyph());
-                setGraphic(null);
+                setText("  " + tool.shortTitle());
+                // safeIcon returns null on unknown code → no icon, no crash
+                FontIcon ic = safeIcon(tool.metadata().iconCode(), 16);
+                setGraphic(ic);
                 setStyle("");
             }
         }

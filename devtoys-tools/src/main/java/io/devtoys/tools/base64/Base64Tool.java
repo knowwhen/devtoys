@@ -23,7 +23,7 @@ import java.util.Base64;
         shortTitle = "Base64",
         longTitle = "Base64 Encoder / Decoder",
         description = "Encode and decode Base64 strings.",
-        iconGlyph = "\uD83D\uDD10",
+        iconCode = "mdal-lock",
         searchKeywords = {"base64", "encode", "decode", "b64"},
         order = 10
 )

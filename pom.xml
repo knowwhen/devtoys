@@ -27,6 +27,7 @@
 
     <slf4j.version>2.0.13</slf4j.version>
     <logback.version>1.5.6</logback.version>
+    <ikonli.version>12.3.1</ikonli.version>
   </properties>
 
   <dependencyManagement>
@@ -65,6 +66,33 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logback.version}</version>
+      </dependency>
+
+      <!-- Icons: Ikonli core + JavaFX integration + three icon packs -->
+      <dependency>
+        <groupId>org.kordamp.ikonli</groupId>
+        <artifactId>ikonli-core</artifactId>
+        <version>${ikonli.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.kordamp.ikonli</groupId>
+        <artifactId>ikonli-javafx</artifactId>
+        <version>${ikonli.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.kordamp.ikonli</groupId>
+        <artifactId>ikonli-fluentui-pack</artifactId>
+        <version>${ikonli.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.kordamp.ikonli</groupId>
+        <artifactId>ikonli-fontawesome5-pack</artifactId>
+        <version>${ikonli.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.kordamp.ikonli</groupId>
+        <artifactId>ikonli-material2-pack</artifactId>
+        <version>${ikonli.version}</version>
       </dependency>
 
       <!-- Internal modules -->
