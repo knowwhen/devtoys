@@ -3,10 +3,10 @@ package io.devtoys.core;
 import io.devtoys.api.IGuiTool;
 import io.devtoys.api.ServiceContext;
 import io.devtoys.api.ToolMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Discovers and holds all available tools.
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 public final class ToolRegistry {
 
-    private static final Logger LOG = Logger.getLogger(ToolRegistry.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(ToolRegistry.class.getName());
 
     private final List<ToolDescriptor> tools;
 
@@ -47,23 +47,19 @@ public final class ToolRegistry {
         for (IGuiTool tool : ServiceLoader.load(IGuiTool.class)) {
             ToolMetadata meta = tool.getClass().getAnnotation(ToolMetadata.class);
             if (meta == null) {
-                LOG.log(Level.WARNING,
-                        "Tool {0} is registered as a service but missing @ToolMetadata; skipping.",
-                        tool.getClass().getName());
+                LOG.warn("Tool {} is registered as a service but missing @ToolMetadata; skipping.", tool.getClass().getName());
                 continue;
             }
             try {
                 tool.initialize(context);
             } catch (RuntimeException e) {
-                LOG.log(Level.WARNING,
-                        "Tool " + tool.getClass().getName() + " failed to initialize; skipping.",
-                        e);
+                LOG.warn("Tool " + tool.getClass().getName() + " failed to initialize; skipping.", e);
                 continue;
             }
             found.add(new ToolDescriptor(tool, meta, tool.getClass()));
         }
 
-        LOG.log(Level.INFO, "Discovered {0} tool(s).", found.size());
+        LOG.info("Discovered {} tool(s).", found.size());
         return new ToolRegistry(found);
     }
 

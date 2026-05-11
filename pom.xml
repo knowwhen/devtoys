@@ -24,6 +24,9 @@
     <atlantafx.version>2.0.1</atlantafx.version>
 <!--    <jackson.version>2.17.2</jackson.version>-->
     <junit.version>5.10.2</junit.version>
+
+    <slf4j.version>2.0.13</slf4j.version>
+    <logback.version>1.5.6</logback.version>
   </properties>
 
   <dependencyManagement>
@@ -50,6 +53,18 @@
         <groupId>io.github.mkpaz</groupId>
         <artifactId>atlantafx-base</artifactId>
         <version>${atlantafx.version}</version>
+      </dependency>
+
+      <!-- Logging: SLF4J API + Logback impl -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
       </dependency>
 
       <!-- Internal modules -->

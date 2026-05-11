@@ -1,5 +1,5 @@
 module io.devtoys.core {
-    requires java.logging;
+    requires org.slf4j;
     requires transitive io.devtoys.api;
 
     uses io.devtoys.api.IGuiTool;

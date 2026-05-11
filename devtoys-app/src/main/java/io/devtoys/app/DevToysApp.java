@@ -6,7 +6,7 @@ import io.devtoys.api.ClipboardService;
 import io.devtoys.api.ServiceContext;
 import io.devtoys.api.SettingsStore;
 import io.devtoys.core.ToolRegistry;
-import io.devtoys.core.services.InMemorySettingsStore;
+import io.devtoys.core.services.FileSettingsStore;
 import io.devtoys.core.services.JavaFxClipboardService;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -27,7 +27,7 @@ public class DevToysApp extends Application {
     public void start(Stage stage) throws Exception {
         // Host service
         ClipboardService clipboard = new JavaFxClipboardService();
-        settings = new InMemorySettingsStore();
+        settings = new FileSettingsStore();
         ServiceContext context = new ServiceContext(clipboard, settings);
 
         // Discover tools
@@ -58,6 +58,13 @@ public class DevToysApp extends Application {
         boolean nowDark = !settings.getBoolean(SETTING_DARK_MODE, true);
         settings.setBoolean(SETTING_DARK_MODE, nowDark);
         applyTheme(nowDark);
+    }
+
+    @Override
+    public void stop() {
+        if (settings instanceof FileSettingsStore fileSettingsStore) {
+            fileSettingsStore.flush();
+        }
     }
 
     public static void main(String[] args) {
