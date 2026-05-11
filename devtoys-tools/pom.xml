@@ -17,6 +17,25 @@
             <groupId>io.devtoys</groupId>
             <artifactId>devtoys-api</artifactId>
         </dependency>
+        <!-- Needed for BackgroundTaskRunner. Tools used to depend only on the
+             API module, but the task runner is a "host-provided utility", so
+             we accept a dependency on core here. Plugins that don't need
+             background computations can still depend only on the API. -->
+        <dependency>
+            <groupId>io.devtoys</groupId>
+            <artifactId>devtoys-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

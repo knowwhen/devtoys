@@ -6,4 +6,5 @@ module io.devtoys.core {
 
     exports io.devtoys.core;
     exports io.devtoys.core.services;
+    exports io.devtoys.core.tasks;
 }
