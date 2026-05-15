@@ -15,5 +15,6 @@ module io.devtoys.tools {
     requires org.slf4j;
 
     provides io.devtoys.api.IGuiTool with
-            io.devtoys.tools.base64.Base64Tool;
+            io.devtoys.tools.base64.Base64Tool,
+            io.devtoys.tools.hash.HashTool;
 }
